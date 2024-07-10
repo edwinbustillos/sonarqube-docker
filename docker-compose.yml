@@ -3,28 +3,32 @@ version: "3"
 services:
   sonarqube:
     image: sonarqube:lts-community #my-sonarqube:latest
-    privileged: true
+    container_name: sonarqube
+    #privileged: true
     depends_on:
       - sonar_db
+    restart: unless-stopped
     environment:
       SONAR_JDBC_URL: jdbc:postgresql://sonar_db:5432/sonar
       SONAR_JDBC_USERNAME: sonar
       SONAR_JDBC_PASSWORD: sonar
       SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
-      SONAR_SEARCH_JAVA_OPTS: "-Xmx1g -Xms512m"
+      SONAR_SEARCH_JAVA_OPTS: "-Xmx2g -Xms1g"
+    mem_limit: 4g
     ports:
       - "9000:9000"
+      - "9092:9092"
     volumes:
       - sonarqube_conf:/opt/sonarqube/conf
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_extensions:/opt/sonarqube/extensions
-      - sonarqube_logs:/opt/sonarqube/logs
       - sonarqube_temp:/opt/sonarqube/temp
+      - sonarqube_logs:/opt/sonarqube/logs
       #- ./sonar-scanner.properties:/opt/sonarqube/conf/sonar-scanner.properties
-    mem_limit: 2g
 
   sonar_db:
     image: postgres:13
+    restart: unless-stopped
     environment:
       POSTGRES_USER: sonar
       POSTGRES_PASSWORD: sonar
@@ -32,12 +36,13 @@ services:
     volumes:
       - sonar_db:/var/lib/postgresql
       - sonar_db_data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
 
 volumes:
   sonarqube_conf:
   sonarqube_data:
   sonarqube_extensions:
-  sonarqube_logs:
   sonarqube_temp:
   sonar_db:
   sonar_db_data:
+  sonarqube_logs:
