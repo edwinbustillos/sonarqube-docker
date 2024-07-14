@@ -96,3 +96,21 @@ COPY sonar-scanner.properties /opt/sonar-scanner/conf/
 rdctl shell 
 sudo sysctl -w vm.max_map_count=262144
 echo "vm.max_map_count=262144" | sudo tee -a /etc/sysctl.conf
+
+
+Integrate SonarQube with Your Spring Project:
+<build>'
+    <plugins>
+        <plugin>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>3.9.0.2155</version> <!-- Replace with the latest version -->
+        </plugin>
+    </plugins>
+</build>
+
+Configure SonarQube properties in your project. Add a sonar-project.properties file in your project's root directory with the necessary properties, including project key, project name, and SonarQube server URL. For example:
+
+sonar.projectKey=my-spring-project
+sonar.projectName=My Spring Project
+sonar.host.url=http://localhost:9000
