@@ -1,6 +1,6 @@
 services:
   sonarqube:
-    image: sonarqube:lts-community #my-sonarqube:latest
+    image: my-sonar:latest #sonarqube:lts-community
     container_name: sonarqube
     #privileged: true
     depends_on:

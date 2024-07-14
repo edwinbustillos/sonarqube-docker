@@ -20,8 +20,9 @@ Para construir a imagem Docker, siga os passos abaixo:
 
 ```
 docker build --no-cache -t my-sonarqube:latest .
-
+docker exec -it <image> /bin/bash
 ```
+
 
 3. Executando o Contêiner
 Depois de construir a imagem, você pode executar o contêiner usando o comando abaixo:
